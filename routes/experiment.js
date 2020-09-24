@@ -64,6 +64,27 @@ router.post('/', upload.single('experiment'), (req, res, next) => {
     })
 })
 
+
+// on submitting a new job using form multipart
+router.post('/score', (req, res, next) => {
+  console.log(req.body)
+  const title = req.body.title || 'untitled'
+ 
+  return Experiment.create({
+    title,
+    file: 'rien.gif',
+  })
+    .then(experiment => res.end('coucou'))
+    .catch(err => {
+      console.log(
+        '***There was an error creating a experiment',
+        JSON.stringify(experiment),
+      )
+      return res.status(400).send(err)
+    })
+})
+
+
 router.get('/:id(\\d+)', async (req, res, next) => {
   return Experiment.findByPk(parseInt(req.params.id, 10))
     .then(({ dataValues }) => {
